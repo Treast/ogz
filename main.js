@@ -7,6 +7,7 @@ const config = {
   dirName: null,
   pathDirectoryToZip: null,
   ignoreFiles: [],
+  format: 'zip',
 };
 
 const checkArguments = () => {
@@ -20,6 +21,10 @@ const checkArguments = () => {
 
     const dirName = config.pathDirectoryToZip.split(path.sep).pop();
     config.dirName = dirName;
+
+    if (args.tar) {
+      config.format = 'tar';
+    }
 
     resolve();
   });
@@ -37,9 +42,10 @@ const buildFromConfigFile = () => {
 
 const gatherFiles = () => {
   return new Promise((resolve, reject) => {
-    const output = fs.createWriteStream(__dirname + `/${config.dirName}.zip`);
-    const archive = archiver('zip', {
-      zlib: { level: 9 }, // Sets the compression level.
+    const output = fs.createWriteStream(__dirname + `/${config.dirName}.${config.format}`);
+    const archive = archiver(config.format, {
+      zlib: { level: 10 }, // Sets the compression level.
+      gzipOptions: { level: 10 }, // Sets the compression level.
     });
 
     output.on('close', function () {
