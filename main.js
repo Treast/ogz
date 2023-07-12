@@ -44,8 +44,8 @@ const gatherFiles = () => {
   return new Promise((resolve, reject) => {
     const output = fs.createWriteStream(__dirname + `/${config.dirName}.${config.format}`);
     const archive = archiver(config.format, {
-      zlib: { level: 10 }, // Sets the compression level.
-      gzipOptions: { level: 10 }, // Sets the compression level.
+      zlib: { level: 9 }, // Sets the compression level.
+      gzipOptions: { level: 9 }, // Sets the compression level.
     });
 
     output.on('close', function () {
