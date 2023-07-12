@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const archiver = require('archiver');
 const args = require('yargs').argv;
-const { glob, globSync, globStream, globStreamSync, Glob } = require('glob');
 
 const config = {
   dirName: null,
@@ -19,7 +18,7 @@ const checkArguments = () => {
     const directoryToZip = args._[0];
     config.pathDirectoryToZip = path.resolve(__dirname, directoryToZip);
 
-    const dirName = path.dirname(config.pathDirectoryToZip).split(path.sep).pop();
+    const dirName = config.pathDirectoryToZip.split(path.sep).pop();
     config.dirName = dirName;
 
     resolve();
@@ -57,7 +56,15 @@ const gatherFiles = () => {
     });
     archive.pipe(output);
 
-    archive.glob(config.pathDirectoryToZip, { pattern: '**/*.*', skip: config.ignoreFiles, cwd: config.pathDirectoryToZip });
+    archive.glob(config.pathDirectoryToZip, {
+      pattern: '**/*',
+      ignore: config.ignoreFiles,
+      skip: config.ignoreFiles,
+      cwd: config.pathDirectoryToZip,
+      stat: true,
+      mark: true,
+      nocase: true,
+    });
     archive.finalize();
   });
 };
@@ -66,6 +73,7 @@ checkArguments()
   .then(buildFromConfigFile)
   .then(gatherFiles)
   .then(() => {
+    // console.log(config);
     console.log('Success');
   })
   .catch((err) => {
