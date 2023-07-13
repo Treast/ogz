@@ -71,9 +71,9 @@ const buildFromConfigFile = () => {
     config.spinner.succeed();
     config.spinner = ora('Loading configuration file').start();
 
-    let pathConfigFile = path.resolve(__dirname, '.stockrc');
+    let pathConfigFile = path.resolve(__dirname, '.ogzrc');
 
-    const localConfigFile = path.resolve(cwd(), '.stockrc');
+    const localConfigFile = path.resolve(cwd(), '.ogzrc');
 
     if (fs.existsSync(localConfigFile)) {
       pathConfigFile = localConfigFile;

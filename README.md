@@ -1,6 +1,6 @@
+# ogz
 
-# Stock
-**Stock** is a command line that allows you to simply and quickly archive your projects without modules and useless folders (`node_modules`, `.idea`, `vendor` etc...).
+**ogz** is a command line that allows you to simply and quickly archive your projects without modules and useless folders (`node_modules`, `.idea`, `vendor` etc...).
 
 ## ✨ Features
 
@@ -9,39 +9,42 @@
 
 ## 💻 Usage
 
-
 ### With NPM
-    npx stock ./my-folder
+
+    npx ogz ./my-folder
 
 ### With PNPM
-    pnpx stock ./my-folder
+
+    pnpx ogz ./my-folder
 
 ## 🗒️ Examples
 
-### Create a simple ZIP archive 
-`npx stock ./my-folder`
+### Create a simple ZIP archive
 
-### Create a simple TAR archive 
-`npx stock --format=tar ./my-folder`
+`npx ogz ./my-folder`
+
+### Create a simple TAR archive
+
+`npx ogz --format=tar ./my-folder`
 
 ### Create multiple archives
-`npx stock ./my-folder-a ./my-folder-b`
+
+`npx ogz ./my-folder-a ./my-folder-b`
 
 ### Create archives recursively
-`npx stock -r ./my-folder`
 
+`npx ogz -r ./my-folder`
 
 ## ⚙️ Options
 
-|Option|Alias|Default|Description|
-|--|--|--|--|
-|--recursive|-r|`false`|Run the program recursively, archiving subfolders of the specified folders
-|--format|-f|`zip`|Choose between ZIP or TAR archiving format
-
+| Option      | Alias | Default | Description                                                                |
+| ----------- | ----- | ------- | -------------------------------------------------------------------------- |
+| --recursive | -r    | `false` | Run the program recursively, archiving subfolders of the specified folders |
+| --format    | -f    | `zip`   | Choose between ZIP or TAR archiving format                                 |
 
 ## 💡 I would like XXX but it's not yet available?
 
-[Go to the issues](https://github.com/Treast/stock/issues) and submit your idea. If it's relevant, I might add it 🫶.
+[Go to the issues](https://github.com/Treast/ogz/issues) and submit your idea. If it's relevant, I might add it 🫶.
 
 ## ⚠️Warning
 
