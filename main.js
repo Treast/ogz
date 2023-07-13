@@ -1,26 +1,25 @@
 const path = require('path');
 const fs = require('fs');
 const archiver = require('archiver');
+const { cwd } = require('process');
 const args = require('yargs').argv;
 
 const config = {
-  dirName: null,
-  pathDirectoryToZip: null,
+  projects: [],
   ignoreFiles: [],
   format: 'zip',
 };
 
 const checkArguments = () => {
   return new Promise((resolve, reject) => {
-    if (args._.length !== 1) {
-      reject('You can only specify 1 directory.');
-    }
-
-    const directoryToZip = args._[0];
-    config.pathDirectoryToZip = path.resolve(__dirname, directoryToZip);
-
-    const dirName = config.pathDirectoryToZip.split(path.sep).pop();
-    config.dirName = dirName;
+    args._.map((project) => {
+      const pathDirectoryToZip = path.resolve(__dirname, project);
+      const dirName = pathDirectoryToZip.split(path.sep).pop();
+      config.projects.push({
+        pathDirectoryToZip,
+        dirName,
+      });
+    });
 
     if (args.tar) {
       config.format = 'tar';
@@ -32,7 +31,14 @@ const checkArguments = () => {
 
 const buildFromConfigFile = () => {
   return new Promise((resolve, reject) => {
-    const pathConfigFile = path.resolve(__dirname, '.stockrc');
+    let pathConfigFile = path.resolve(__dirname, '.stockrc');
+
+    const localConfigFile = path.resolve(cwd(), '.stockrc');
+
+    if (fs.existsSync(localConfigFile)) {
+      pathConfigFile = localConfigFile;
+    }
+
     const configFile = fs.readFileSync(pathConfigFile, 'utf-8');
     config.ignoreFiles = configFile.split('\r\n');
 
@@ -40,9 +46,17 @@ const buildFromConfigFile = () => {
   });
 };
 
-const gatherFiles = () => {
+const zipProjects = () => {
+  const promises = config.projects.map((project) => {
+    return gatherFiles(project);
+  });
+
+  return Promise.all(promises);
+};
+
+const gatherFiles = (project) => {
   return new Promise((resolve, reject) => {
-    const output = fs.createWriteStream(__dirname + `/${config.dirName}.${config.format}`);
+    const output = fs.createWriteStream(cwd() + `/${project.dirName}.${config.format}`);
     const archive = archiver(config.format, {
       zlib: { level: 9 }, // Sets the compression level.
       gzipOptions: { level: 9 }, // Sets the compression level.
@@ -62,11 +76,11 @@ const gatherFiles = () => {
     });
     archive.pipe(output);
 
-    archive.glob(config.pathDirectoryToZip, {
+    archive.glob(project.pathDirectoryToZip, {
       pattern: '**/*',
       ignore: config.ignoreFiles,
       skip: config.ignoreFiles,
-      cwd: config.pathDirectoryToZip,
+      cwd: project.pathDirectoryToZip,
       stat: true,
       mark: true,
       nocase: true,
@@ -77,7 +91,7 @@ const gatherFiles = () => {
 
 checkArguments()
   .then(buildFromConfigFile)
-  .then(gatherFiles)
+  .then(zipProjects)
   .then(() => {
     // console.log(config);
     console.log('Success');
