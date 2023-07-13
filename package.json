@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "bin": {
+    "stock": "main.js"
+  },
   "type": "module",
   "keywords": [
     "stock",
@@ -15,7 +18,8 @@
     "archives"
   ],
   "author": "Vincent Riva <vincent.riva@outlook.fr>",
-  "license": "ISC",
+  "repository": "https://github.com/Treast/stock",
+  "license": "MIT",
   "dependencies": {
     "archiver": "^5.3.1",
     "ora": "^6.3.1",
