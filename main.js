@@ -40,7 +40,7 @@ const checkArguments = () => {
     if (args.r || args.recursive) {
       directories = directories
         .map((directory) => {
-          const directoryPath = path.resolve(__dirname, directory);
+          const directoryPath = path.resolve(cwd(), directory);
           return fs
             .readdirSync(directoryPath, { withFileTypes: true })
             .filter((dirent) => dirent.isDirectory())
@@ -50,7 +50,7 @@ const checkArguments = () => {
     }
 
     directories.map((project) => {
-      const pathDirectoryToZip = path.resolve(__dirname, project);
+      const pathDirectoryToZip = path.resolve(cwd(), project);
       const dirName = pathDirectoryToZip.split(path.sep).pop();
       config.projects.push({
         pathDirectoryToZip,
