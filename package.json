@@ -1,6 +1,6 @@
 {
   "name": "ogz",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A CLI-command to archives development projects",
   "main": "main.js",
   "scripts": {
