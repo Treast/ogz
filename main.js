@@ -119,7 +119,7 @@ const gatherFiles = (project) => {
     });
 
     output.on('close', function () {
-      project.spinner.succeed(`Archiving ${project.dirName}.${config.format} (${convertUnits(archive.pointer())} bytes)`);
+      project.spinner.succeed(`Archiving ${project.dirName}.${config.format} (${convertUnits(archive.pointer())})`);
       resolve();
     });
 
